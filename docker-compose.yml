@@ -1,0 +1,46 @@
+services:
+  # `docker compose up -d` starts only MongoDB, for local development with `npm run dev`.
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--quiet', '--eval', "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # `docker compose --profile app up --build` runs the whole stack: http://localhost:8080
+  api:
+    profiles: [app]
+    build:
+      context: .
+      target: api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      MONGODB_URI: mongodb://mongo:27017/task-manager
+      CORS_ORIGIN: http://localhost:8080
+      TRUST_PROXY: 1 # one reverse proxy (nginx) in front of the API
+      API_DOCS: 'true' # docs are off by default in production; this is a demo stack
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  web:
+    profiles: [app]
+    build:
+      context: .
+      target: web
+    restart: unless-stopped
+    ports:
+      - '8080:8080'
+    depends_on:
+      - api
+
+volumes:
+  mongo-data:

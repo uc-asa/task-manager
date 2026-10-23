@@ -1,0 +1,1085 @@
+/* ---------- Design tokens ---------- */
+:root {
+  --bg: #f4f5f9;
+  --surface: #ffffff;
+  --surface-2: #f0f2f7;
+  --text: #1a2033;
+  --muted: #4b5565;
+  --border: #dfe3ec;
+  --primary: #3b5bdb;
+  --primary-hover: #304ac0;
+  --primary-soft: #e7ecff;
+  --primary-text: #ffffff;
+  --danger: #b42318;
+  --danger-solid: #c92a2a; /* background for white text; --danger is too light in dark mode */
+  --success: #1a6b2d;
+  --warning: #9a5200;
+  --info: #1764ab;
+  --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 1px 3px rgb(16 24 40 / 6%);
+  --shadow-hover: 0 4px 14px rgb(16 24 40 / 10%);
+  --radius: 12px;
+  --radius-sm: 8px;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #11141b;
+    --surface: #1a1f2e;
+    --surface-2: #232a3d;
+    --text: #e8eaf0;
+    --muted: #aab3c5;
+    --border: #2d3550;
+    --primary: #7c93fb;
+    --primary-hover: #94a8ff;
+    --primary-soft: #26305a;
+    --primary-text: #0d1122;
+    --danger: #ff8787;
+    --success: #69db7c;
+    --warning: #ffa94d;
+    --info: #74c0fc;
+    --shadow: 0 1px 2px rgb(0 0 0 / 30%);
+    --shadow-hover: 0 6px 18px rgb(0 0 0 / 35%);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font:
+    16px/1.5 system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Layout ---------- */
+.container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 32px 16px 80px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+}
+
+.header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.tagline {
+  font-size: 0.9rem;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stat {
+  padding: 3px 12px;
+  background: var(--surface-2);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.stat-danger {
+  background: color-mix(in srgb, var(--danger) 14%, var(--surface));
+  color: var(--danger);
+}
+
+.stat-success {
+  background: color-mix(in srgb, var(--success) 14%, var(--surface));
+  color: var(--success);
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+/* ---------- Form controls ---------- */
+::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+  color: var(--text);
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 9px 12px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+/* One dropdown look everywhere: the native arrow hugs the edge, so draw our own with real padding. */
+select {
+  padding-right: 38px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='m5 8 5 5 5-5' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-position: right 12px center;
+  background-size: 16px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  text-overflow: ellipsis;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 25%, transparent);
+}
+
+input[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+}
+
+.field {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.field-grow {
+  flex: 1 1 auto;
+}
+
+.field-error {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--danger);
+}
+
+.counter {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  text-align: right;
+  color: var(--muted);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.row .field {
+  min-width: 150px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s,
+    transform 0.05s;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--primary);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-text);
+  font-weight: 600;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.btn-ghost {
+  padding: 6px 10px;
+  background: transparent;
+  border-color: transparent;
+  color: var(--muted);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--surface-2);
+  border-color: transparent;
+  color: var(--text);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
+}
+
+/* ---------- New / edit task form ---------- */
+.form {
+  margin-bottom: 20px;
+}
+
+.form-editing {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+.composer {
+  display: grid;
+  grid-template-areas:
+    'title submit'
+    'options options'
+    'description description';
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px 10px;
+  align-items: start;
+}
+
+.composer-title {
+  grid-area: title;
+}
+
+.composer-title input {
+  padding: 11px 14px;
+  font-size: 1rem;
+}
+
+.composer-submit {
+  display: inline-flex;
+  grid-area: submit;
+  gap: 6px;
+  align-items: center;
+  height: 48px;
+  padding-inline: 20px;
+  white-space: nowrap;
+}
+
+.composer-description {
+  grid-area: description;
+  animation: reveal 0.15s ease-out;
+}
+
+.form-editing .composer {
+  grid-template-areas:
+    'title'
+    'options'
+    'description';
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Labelled rows ("Priority", "Due", "Status") share one label column, so every control starts at the
+   same x position, whatever the label's width. */
+.composer-options {
+  display: grid;
+  grid-area: options;
+  gap: 12px;
+  justify-items: start;
+}
+
+.picker {
+  --label-width: 5rem;
+
+  display: grid;
+  grid-template-columns: var(--label-width) minmax(0, auto);
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+.picker-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.picker-select {
+  width: auto;
+  min-width: 160px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.chip {
+  min-height: 36px;
+  padding: 5px 13px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+}
+
+.chip:hover {
+  border-color: var(--primary);
+}
+
+.chip[aria-pressed='true'] {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.chip-clear {
+  display: grid;
+  place-items: center; /* centres the icon both ways, whatever the font's metrics */
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+
+.date-input {
+  width: auto;
+  min-height: 36px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.875rem;
+}
+
+.link-btn {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  min-height: 36px;
+  padding: 0;
+  background: none;
+  border: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.link-btn:hover {
+  text-decoration: underline;
+}
+
+.icon {
+  flex: none;
+  width: 1.05em;
+  height: 1.05em;
+}
+
+.icon-chevron {
+  transition: transform 0.15s;
+}
+
+.icon-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+/* ---------- Filters ---------- */
+.filters {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.search-box {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.search-box input {
+  padding-left: 38px;
+}
+
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.segmented {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--surface-2);
+  border-radius: 10px;
+}
+
+.segment {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 14px;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+.segment:hover {
+  color: var(--text);
+}
+
+.segment[aria-pressed='true'],
+.segment:has(input:checked) {
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: var(--shadow);
+}
+
+.filters-selects {
+  display: flex;
+  gap: 8px;
+}
+
+.filters-selects select {
+  width: auto;
+  min-height: 40px;
+  padding-block: 7px;
+  font-size: 0.875rem;
+}
+
+/* Radio inputs inside .segment are visually hidden; the label is the control. */
+.segment input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.segment:has(input:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.segment-high:has(input:checked) {
+  color: var(--danger);
+}
+
+.segment-medium:has(input:checked) {
+  color: var(--warning);
+}
+
+.segment-low:has(input:checked) {
+  color: var(--success);
+}
+
+.segment-count {
+  min-width: 22px;
+  padding: 0 6px;
+  background: var(--surface-2);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.segment[aria-pressed='true'] .segment-count {
+  background: var(--primary-soft);
+}
+
+/* ---------- Task list ---------- */
+.task-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: opacity 0.15s;
+}
+
+.task-list.is-stale {
+  opacity: 0.6;
+}
+
+.task {
+  --accent: var(--border);
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 14px;
+  align-items: center;
+  border-left: 4px solid var(--accent);
+  transition:
+    box-shadow 0.15s,
+    transform 0.15s,
+    opacity 0.15s;
+}
+
+.task:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.priority-high {
+  --accent: var(--danger);
+}
+
+.priority-medium {
+  --accent: var(--warning);
+}
+
+.priority-low {
+  --accent: var(--success);
+}
+
+.task-main {
+  flex: 1;
+  min-width: 200px;
+}
+
+.task-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.task-done {
+  --accent: var(--border);
+}
+
+.task-done .task-title {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+/* Finished tasks are muted with colour, not opacity: opacity would lower text contrast below AA. */
+.task-done .badge {
+  color: var(--muted);
+}
+
+.task-desc {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+  font-size: 0.8rem;
+}
+
+.task-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.task-controls select {
+  width: auto;
+  padding-block: 6px;
+  font-size: 0.85rem;
+}
+
+/* The label gives the small circle a 44px tap/click target (WCAG 2.2 asks for 24px at least). */
+.check-hit {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: -10px -6px -10px -10px;
+  cursor: pointer;
+}
+
+/* Round checkbox: the fastest way to complete a task */
+.check {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  appearance: none;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+}
+
+.check:hover {
+  border-color: var(--success);
+}
+
+.check:checked {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='m5 10.5 3.2 3.2L15 6.8' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 100% no-repeat var(--success);
+  border-color: var(--success);
+}
+
+.check:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.badge {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 2px 10px;
+  background: color-mix(in srgb, currentcolor 12%, transparent);
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  background: currentcolor;
+  border-radius: 50%;
+}
+
+.badge-low {
+  color: var(--success);
+}
+
+.badge-medium {
+  color: var(--warning);
+}
+
+.badge-high {
+  color: var(--danger);
+}
+
+.due {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  color: var(--muted);
+}
+
+.due-today {
+  color: var(--warning);
+  font-weight: 600;
+}
+
+.due-overdue {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+/* Status as a coloured pill, still a native <select> */
+.status-select {
+  --pill: var(--muted);
+
+  width: auto;
+  min-height: 34px;
+  padding: 4px 30px 4px 14px;
+  appearance: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='m5 8 5 5 5-5' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      right 8px center / 14px no-repeat,
+    color-mix(in srgb, var(--pill) 14%, var(--surface));
+  border-color: transparent;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--pill);
+  cursor: pointer;
+}
+
+.status-in_progress {
+  --pill: var(--info);
+}
+
+.status-done {
+  --pill: var(--success);
+}
+
+.fatal {
+  display: grid;
+  gap: 8px;
+  margin-top: 15vh;
+  text-align: center;
+}
+
+.fatal h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.fatal p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.fatal .actions {
+  justify-content: center;
+}
+
+/* ---------- Confirm dialog ---------- */
+.btn-danger-solid {
+  background: var(--danger-solid);
+  border-color: var(--danger-solid);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-danger-solid:hover:not(:disabled) {
+  filter: brightness(0.92);
+  border-color: var(--danger-solid);
+}
+
+.dialog {
+  width: min(420px, calc(100vw - 32px));
+  padding: 0;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 50px rgb(0 0 0 / 35%);
+  animation: dialog-in 0.16s ease-out;
+}
+
+.dialog::backdrop {
+  background: rgb(10 14 25 / 55%);
+  backdrop-filter: blur(2px);
+}
+
+.dialog-body {
+  padding: 22px;
+}
+
+.dialog-body h2 {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+}
+
+.dialog-body p {
+  margin: 0;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 22px;
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- States ---------- */
+.empty {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  padding: 36px 16px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.empty p {
+  margin: 0;
+}
+
+.empty-icon {
+  width: 56px;
+  height: 56px;
+  color: color-mix(in srgb, var(--muted) 70%, transparent);
+}
+
+.skeleton {
+  height: 76px;
+  border-left: 4px solid var(--border);
+  background:
+    linear-gradient(
+        100deg,
+        transparent 30%,
+        color-mix(in srgb, var(--text) 7%, transparent) 50%,
+        transparent 70%
+      )
+      0 0 / 250% 100% no-repeat,
+    var(--surface);
+  animation: shimmer 1.3s linear infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 150% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.banner {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+}
+
+.banner p {
+  margin: 0 0 8px;
+}
+
+.banner-error {
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 50%, transparent);
+}
+
+.form .banner {
+  margin: 12px 0 0;
+}
+
+.pagination {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 600px) {
+  .container {
+    padding-top: 20px;
+  }
+
+  /* Title on its own line, summary chips underneath (side by side they crush the title). */
+  .header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .stats {
+    justify-content: flex-start;
+  }
+
+  /* Four status tabs must fit on one line without wrapping their labels. */
+  .segmented {
+    overflow-x: auto;
+  }
+
+  .segment {
+    gap: 4px;
+    padding-inline: 8px;
+    font-size: 0.8125rem;
+    white-space: nowrap;
+  }
+
+  /* Narrow screens stack title, details, then the submit button: same as the DOM order. */
+  .composer {
+    grid-template-areas:
+      'title'
+      'options'
+      'description'
+      'submit';
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .composer-submit {
+    justify-content: center;
+    height: 48px;
+  }
+
+  .chip,
+  .date-input {
+    min-height: 44px;
+  }
+
+  .chip-clear {
+    width: 44px;
+    height: 44px;
+  }
+
+  .picker {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .picker-select {
+    width: 100%;
+  }
+
+  .filters-row {
+    align-items: stretch;
+  }
+
+  .segmented {
+    width: 100%;
+  }
+
+  .segment {
+    flex: 1;
+    padding-inline: 6px;
+  }
+
+  .filters-selects {
+    width: 100%;
+  }
+
+  .filters-selects select {
+    flex: 1;
+  }
+
+  .task-controls {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "name": "task-manager",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "MERN Task Manager - Express + MongoDB API with a React + TypeScript client",
+  "workspaces": [
+    "shared",
+    "server",
+    "client"
+  ],
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "postinstall": "npm run build -w shared",
+    "dev": "npm run build -w shared && concurrently -n shared,api,web -c yellow,blue,green \"npm run dev -w shared\" \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build": "npm run build -w shared && npm run build -w server && npm run build -w client",
+    "lint": "npm run build -w shared && eslint .",
+    "lint:fix": "npm run build -w shared && eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "npm run build -w shared && npm run typecheck -w server && npm run typecheck -w client",
+    "test": "npm run build -w shared && npm run test -w server && npm run test -w client",
+    "check": "npm run lint && npm run format:check && npm run typecheck && npm run test",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,yml,html}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "concurrently": "^10.0.6",
+    "eslint": "^10.13.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.13.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.9.10",
+    "typescript-eslint": "^8.72.0"
+  }
+}
